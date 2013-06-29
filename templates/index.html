@@ -79,7 +79,7 @@
       </div>
 
     </div>
-      <form class="form-signin">
+      <form class="form-signin" id="chatform">
         <h2 class="form-signin-heading">GoChatRoom</h2>
         <table>
           <tr>
@@ -99,8 +99,8 @@
           <tr>
             <td>
               <span class="label label-info" id="yourname">YourName</span><br />
-              <input type="text" class="input-block-level" placeholder="Say hello!" style="width:500px;" id="msg" autocomplete="off">
-              <input class="btn btn-primary" type="button" value="Send" id="send"/>
+              <input type="text" class="input-block-level" placeholder="Press Enter to send!" style="width:600px;" id="msg" autocomplete="off">
+              <!--<input class="btn btn-primary" type="button" value="Send" id="send"/> -->
             </td>
             <td><input class="btn btn-warning" type="button" value="Clear" id="clear"/></td>
           </tr>
@@ -124,6 +124,10 @@
           "show"      : true    
         });
 
+        $("#chatform").submit(function() {
+          return false;
+        });
+
         $("#save").click(function() {
           var inputName = $("#inputName").val();
           if (inputName != "") {
@@ -133,6 +137,17 @@
           }
           return false;
         });
+
+        function send() {
+          if (!ws) {
+              return false;
+          }
+          if (!$("#msg").val()) {
+              return false;
+          }
+          ws.send($("#msg").val());
+          $("#msg").val("");
+        }
 
         var ws;
         function appendLog(msg) {
@@ -148,18 +163,17 @@
         $("#clear").click(function() {
           $("#log").html('')
         })
-
+        /*
         $("#send").click(function() {
-          if (!ws) {
-              return false;
-          }
-          if (!$("#msg").val()) {
-              return false;
-          }
-          ws.send($("#msg").val());
-          $("#msg").val("");
+          send();
           return false
         });
+        */
+        document.onkeypress = function() {
+          if (event.keyCode==13) {
+            send();
+          }
+        };
 
         if (window["WebSocket"]) {
             ws = new WebSocket("ws://{{$}}/ws");
