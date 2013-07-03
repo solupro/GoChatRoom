@@ -9,4 +9,4 @@ GoChatRoom
 	  -addr=":8177": http service address
 	  -size=20: max size of the message's queue
 	
-预览地址:[http://chat.solupro.org]()
+预览地址:[http://solupro.org:8177/]()
