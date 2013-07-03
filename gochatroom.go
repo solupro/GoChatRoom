@@ -17,18 +17,21 @@ const (
 
 func formatMsg(name, msg string, msgType int) string {
 	var m map[string]interface{}
+	loc, _ := time.LoadLocation("Asia/Shanghai") //set your timezone
+	t := time.Now().In(loc)
+
 	if msgType == MSG_DEFAULT {
 		m = map[string]interface{}{
 			"from":    name,
 			"message": msg,
-			"date":    time.Now().Format("2006-01-02 15:04:05"),
+			"date":    t.Format("2006-01-02 15:04:05"),
 		}
 	} else if msgType == MSG_WITHMEMBER {
 		m = map[string]interface{}{
 			"data": map[string]interface{}{
 				"from":    name,
 				"message": msg,
-				"date":    time.Now().Format("2006-01-02 15:04:05"),
+				"date":    t.Format("2006-01-02 15:04:05"),
 			},
 			"members": clients.memberList(),
 		}
@@ -51,7 +54,7 @@ func indexHandler(rw http.ResponseWriter, req *http.Request) {
 }
 
 var addr = flag.String("addr", ":8177", "http service address")
-var Qsize = flag.Int("size", 20, "max size of the message's queue")
+var Qsize = flag.Int("size", 50, "max size of the message's queue")
 var q Queue
 var clients = &hub{
 	broadcast:   make(chan string),
