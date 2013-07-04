@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/solupro/go.net/websocket"
 	"strings"
+	"text/template"
 	"time"
 )
 
@@ -20,6 +21,7 @@ func (c *connection) reader() {
 	for {
 		var message string
 		err := websocket.Message.Receive(c.ws, &message)
+		message = template.HTMLEscapeString(message)
 		if err != nil {
 			break
 		}
