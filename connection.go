@@ -26,12 +26,22 @@ func (c *connection) reader() {
 			break
 		}
 		if i := strings.Index(message, "name::"); i != -1 {
-			name := message[len("name::"):]
+			name := strings.TrimSpace(message[len("name::"):])
+
+			//check name exist
+			for _, v := range clients.memberList() {
+				if strings.EqualFold(v, name) || strings.EqualFold("System", name) {
+					name = fmt.Sprintf("%s-%d", name, time.Now().Unix()%1000)
+					break
+				}
+			}
+
 			c.name = name
 			if q.Len() > 0 {
 				c.send <- q.Values.String()
 			}
 			clients.broadcast <- formatMsg("System", fmt.Sprintf("%s has joined!", name), MSG_WITHMEMBER)
+
 		} else {
 			t := time.Now().In(loc)
 			if (int(t.Unix()) - int(c.lastMsgTime.Unix())) < *mf {
