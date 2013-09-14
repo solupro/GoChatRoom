@@ -43,7 +43,7 @@ func (c *connection) reader() {
 			clients.broadcast <- formatMsg("System", fmt.Sprintf("%s has joined!", name), MSG_WITHMEMBER)
 
 		} else {
-			message = fmt.Sprintf("%s[%s]", message, c.ws.Request().RemoteAddr)
+			//message = fmt.Sprintf("%s[%s]", message, c.ws.Request().RemoteAddr)
 			t := time.Now().In(loc)
 			if (int(t.Unix()) - int(c.lastMsgTime.Unix())) < *mf {
 				c.send <- formatMsg("System", "you chat frequency too fast!", MSG_WITHMEMBER)
