@@ -10,4 +10,4 @@ GoChatRoom
 	  -mf=2: message's frequency(>second/msg)
 	  -size=50: max size of the message's queue
 	
-预览地址:[http://solupro.org:8177/](http://solupro.org:8177/)
+预览地址:[http://gochatroom.coding.io/](http://gochatroom.coding.io/)
